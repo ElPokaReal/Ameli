@@ -5,7 +5,6 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 
 export default function Principal() {
  return (
@@ -43,8 +42,6 @@ export default function Principal() {
            </Card>
          </Box>
        </Container>
-
-       <Footer />
      </React.Fragment>
  );
  }

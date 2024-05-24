@@ -12,6 +12,10 @@ import Orden from "./pages/Orden";
 import ListadoOrdenes from "./components/ListadoOrdenes";
 import ListadoBeneficiarios from "./components/ListadoBeneficiarios";
 import ListadoProveedores from "./components/ListadoProveedores";
+import RegistroProveedor from "./pages/RegistroProveedor";
+import RegistroBeneficiario from "./pages/RegistroBeneficiario";
+import EdicionBeneficiario from "./pages/EdicionBeneficiario";
+import EdicionProveedor from "./pages/EdicionProveedor";
 
 function App() {
   return (
@@ -31,7 +35,7 @@ function App() {
             }
           />
           <Route
-            path="Orden"
+            path="Orden/:cedula"
             element={
               <ProtectedRoute>
                 <Orden />
@@ -59,6 +63,38 @@ function App() {
             element={
               <ProtectedRoute>
                 <ListadoBeneficiarios />
+              </ProtectedRoute>
+            }
+          />
+                                        <Route
+            path="Beneficiario"
+            element={
+              <ProtectedRoute>
+                <RegistroBeneficiario />
+              </ProtectedRoute>
+            }
+          />
+                                        <Route
+            path="Proveedor"
+            element={
+              <ProtectedRoute>
+                <RegistroProveedor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="editarbeneficiario/:idbene"
+            element={
+              <ProtectedRoute>
+                <EdicionBeneficiario />
+              </ProtectedRoute>
+            }
+          />
+                    <Route
+            path="editarproveedor/:idpro"
+            element={
+              <ProtectedRoute>
+                <EdicionProveedor />
               </ProtectedRoute>
             }
           />

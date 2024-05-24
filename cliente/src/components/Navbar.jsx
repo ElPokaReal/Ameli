@@ -30,8 +30,8 @@ const Navbar = () => {
         )}
         {isAuthenticated && (
           <>
-            <Button color="inherit" onClick={() => navigate('/Beneficiarios')}>Listado de Beneficiarios</Button>
-            <Button color="inherit" onClick={() => navigate('/Proveedores')}>Proveedores</Button>
+            <Button color="inherit" onClick={() => navigate('/ListadoBeneficiarios')}>Beneficiarios</Button>
+            <Button color="inherit" onClick={() => navigate('/ListadoProveedores')}>Proveedores</Button>
             <Button color="inherit" onClick={() => navigate('/ListadoOrdenes')}>Ordenes de Pago</Button>
             <Button color="inherit" onClick={handleLogout}>Cerrar Sesión</Button>
           </>

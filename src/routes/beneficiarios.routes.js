@@ -7,10 +7,12 @@ const beneficiarios = Router();
 
 beneficiarios.get('/beneficiarios', beneficiariosController.getBeneficiarios);
 
+beneficiarios.get('/beneficiarios/:idbene', beneficiariosController.getBeneficiarioID);
+
 beneficiarios.post('/beneficiarios', beneficiariosMiddleware.validateBeneficiario, beneficiariosController.createBeneficiario);
 
-beneficiarios.put('/beneficiarios/:id', beneficiariosMiddleware.validateBeneficiario, beneficiariosController.editBeneficiario);
+beneficiarios.put('/beneficiarios/:idbene', beneficiariosMiddleware.validateBeneficiario, beneficiariosController.editBeneficiario);
 
-beneficiarios.delete('/beneficiarios/:id', beneficiariosController.deleteBeneficiario);
+beneficiarios.delete('/beneficiarios/:idbene', beneficiariosController.deleteBeneficiario);
 
 module.exports=beneficiarios;

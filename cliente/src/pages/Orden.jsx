@@ -1,26 +1,42 @@
-import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
 import { TextField, Button, Box, Typography, Paper } from '@mui/material';
 
 const Orden = () => {
+  const params = useParams();
+  const initialRifCi = params.cedula || "";
  const [financiamiento, setFinanciamiento] = useState("");
  const [razonSocial, setRazonSocial] = useState("");
- const [rifCi, setRifCi] = useState("");
+ const [rifCi, setRifCi] = useState(initialRifCi);
  const [direccion, setDireccion] = useState("");
  const [concepto, setConcepto] = useState("");
  const [tipoOp, setTipoOp] = useState("");
- const [seguroSocialObligatorio, setSeguroSocialObligatorio] = useState("");
- const [seguroParaForzoso, setSeguroParaForzoso] = useState("");
- const [fondoJubilacion, setFondoJubilacion] = useState("");
- const [faov, setFaov] = useState("");
+ const [seguroSocialObligatorio, setSeguroSocialObligatorio] = useState(0);
+ const [seguroParaForzoso, setSeguroParaForzoso] = useState(0);
+ const [fondoJubilacion, setFondoJubilacion] = useState(0);
+ const [faov, setFaov] = useState(0);
  const [retencionIva, setRetencionIva] = useState("");
- const [retencionTimbreFiscal, setRetencionTimbreFiscal] = useState("");
+ const [retencionTimbreFiscal, setRetencionTimbreFiscal] = useState(0);
  const [totalRetenciones, setTotalRetenciones] = useState("");
  const [montoNetoPagar, setMontoNetoPagar] = useState("");
  const [montoBsLetras, setMontoBsLetras] = useState("");
  const [cargoBanco, setCargoBanco] = useState("");
  const [total, setTotal] = useState("");
+ const [x, setX] = useState(1.1153);
  const navigate = useNavigate();
+
+ useEffect(() => {
+  if (total) {
+    const montoNetoPagar = parseFloat(total) / x;
+    const retencionIva =  parseFloat(total) - parseFloat(montoNetoPagar);
+    const totalRetenciones = parseFloat(total) - parseFloat(montoNetoPagar);
+
+    // Actualizar los estados con los nuevos valores calculados
+    setMontoNetoPagar(montoNetoPagar.toFixed(2));
+    setRetencionIva(retencionIva.toFixed(2));
+    setTotalRetenciones(totalRetenciones.toFixed(2));
+  }
+}, [total, x]); // Dependencias del efecto
 
  const handleSubmit = async (event) => {
     event.preventDefault();
@@ -60,14 +76,14 @@ const Orden = () => {
 
       const result = await response.json();
       console.log(result);
-      navigate('/ordenes');
+      navigate('/ListadoOrdenes');
     } catch (error) {
       console.error(error);
     }
  };
 
  const handleCancel = () => {
-  navigate('/ListadoOrdenes');
+  navigate(-1);
 };
 
  return (
@@ -78,18 +94,18 @@ const Orden = () => {
       </Typography>
       <TextField label="Financiamiento" value={financiamiento} onChange={e => setFinanciamiento(e.target.value)} required fullWidth />
       <TextField label="Razón Social" value={razonSocial} onChange={e => setRazonSocial(e.target.value)} required fullWidth />
-      <TextField label="RIF O CI" value={rifCi} onChange={e => setRifCi(e.target.value)} required fullWidth />
+      <TextField label="RIF O CI" value={rifCi} disabled onChange={e => setRifCi(e.target.value)} required fullWidth />
       <TextField label="Dirección" value={direccion} onChange={e => setDireccion(e.target.value)} required fullWidth />
       <TextField label="Por concepto de" value={concepto} onChange={e => setConcepto(e.target.value)} required fullWidth />
-      <TextField label="Tipo de O/P" type="number" value={tipoOp} onChange={e => setTipoOp(e.target.value)} required fullWidth />
-      <TextField label="Seguro social obligatorio" type="number" value={seguroSocialObligatorio} onChange={e => setSeguroSocialObligatorio(e.target.value)} required fullWidth />
-      <TextField label="Seguro de para forzoso" type="number" value={seguroParaForzoso} onChange={e => setSeguroParaForzoso(e.target.value)} required fullWidth />
-      <TextField label="Fondo de jubilacion" type="number" value={fondoJubilacion} onChange={e => setFondoJubilacion(e.target.value)} required fullWidth />
-      <TextField label="FAOV" type="number" value={faov} onChange={e => setFaov(e.target.value)} required fullWidth />
-      <TextField label="Retención de IVA" type="number" value={retencionIva} onChange={e => setRetencionIva(e.target.value)} required fullWidth />
-      <TextField label="Retención de timbre fiscal" type="number" value={retencionTimbreFiscal} onChange={e => setRetencionTimbreFiscal(e.target.value)} required fullWidth />
-      <TextField label="Total de retenciones" type="number" value={totalRetenciones} onChange={e => setTotalRetenciones(e.target.value)} required fullWidth />
-      <TextField label="Monto neto a pagar" type="number" value={montoNetoPagar} onChange={e => setMontoNetoPagar(e.target.value)} required fullWidth />
+      <TextField label="Tipo de O/P" value={tipoOp} onChange={e => setTipoOp(e.target.value)} required fullWidth />
+      <TextField label="Seguro social obligatorio" disabled type="number" value={seguroSocialObligatorio} onChange={e => setSeguroSocialObligatorio(e.target.value)} required fullWidth />
+      <TextField label="Seguro de para forzoso" disabled type="number" value={seguroParaForzoso} onChange={e => setSeguroParaForzoso(e.target.value)} required fullWidth />
+      <TextField label="Fondo de jubilacion" disabled type="number" value={fondoJubilacion} onChange={e => setFondoJubilacion(e.target.value)} required fullWidth />
+      <TextField label="FAOV" type="number" disabled value={faov} onChange={e => setFaov(e.target.value)} required fullWidth />
+      <TextField label="Retención de IVA" disabled type="number" value={retencionIva} onChange={e => setRetencionIva(e.target.value)} required fullWidth />
+      <TextField label="Retención de timbre fiscal" disabled type="number" value={retencionTimbreFiscal} onChange={e => setRetencionTimbreFiscal(e.target.value)} required fullWidth />
+      <TextField label="Total de retenciones" disabled type="number" value={totalRetenciones} onChange={e => setTotalRetenciones(e.target.value)} required fullWidth />
+      <TextField label="Monto neto a pagar" disabled type="number" value={montoNetoPagar} onChange={e => setMontoNetoPagar(e.target.value)} required fullWidth />
       <TextField label="Monto en BS (letras)" value={montoBsLetras} onChange={e => setMontoBsLetras(e.target.value)} required fullWidth />
       <TextField label="Cargo a banco" value={cargoBanco} onChange={e => setCargoBanco(e.target.value)} required fullWidth />
       <TextField label="Total" type="number" value={total} onChange={e => setTotal(e.target.value)} required fullWidth />

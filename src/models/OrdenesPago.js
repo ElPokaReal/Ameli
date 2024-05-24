@@ -7,8 +7,8 @@ const OrdenPago = {
                 financiamiento, razon_social, rif_ci, direccion, concepto, tipo_op,
                 seguro_social_obligatorio, seguro_para_forzoso, fondo_jubilacion, faov,
                 retencion_iva, retencion_timbre_fiscal, total_retenciones, monto_neto_pagar,
-                monto_bs_letras, cargo_banco, total
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+                monto_bs_letras, cargo_banco, total, fecha_creacion
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, CURRENT_DATE)
             RETURNING *;
         `;
     const valores = [
@@ -48,6 +48,13 @@ async obtenerOrdenPorId(id) {
     }
     return rows[0];
 },
+
+async deleteOrden(id){
+  const query = 'DELETE FROM ordenes_pago WHERE id = $1';
+  const values = [id];
+  const result = await pool.query(query, values);
+  return result.rowCount;
+}
 
 };
 

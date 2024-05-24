@@ -32,6 +32,20 @@ const OrdenPagoController = {
     }
   },
 
+  async borrarOrden(req, res){
+    try {
+      const id = req.params.id;
+      const result = await OrdenPago.deleteOrden(id);
+      if (result > 0) {
+          res.status(200).json({ message: 'Orden de Pago eliminada con éxito' });
+      } else {
+          res.status(404).json({ message: 'Orden de Pago no encontrada' });
+      }
+  } catch (error) {
+      res.status(500).json({ message: 'Error al eliminar la orden de pago' });
+  }
+  },
+
   async generarPDF(req, res) {
     try {
       const id = parseInt(req.params.id);
@@ -53,22 +67,18 @@ const OrdenPagoController = {
   
       const stream = fs.createWriteStream(outputPath);
       doc.pipe(stream);
+        
+      // Ahora continúa con el resto del encabezado
+      doc.fontSize(18)
+       .text("Orden de Pago", { align: "center", underline: true })
+       .moveDown(1);
   
-      // Encabezado
+      let fechaCreacion = new Date(ordenPago.fecha_creacion).toLocaleDateString(); // Convierte a formato local
+
       doc
-        .fontSize(24)
-        .text("Alcaldía de Pampán", { align: "center" })
-        .moveDown(0.5);
-      doc
-        .fontSize(18)
-        .text("Orden de Pago", { align: "center", underline: true })
-        .moveDown(1);
-  
-      // Espacio para el encabezado adicional
-      doc
-        .fontSize(12)
-        .text("Fecha: [Fecha]", { align: "right" })
-        .moveDown(1);
+       .fontSize(12)
+       .text(`Fecha: ${fechaCreacion}`, { align: "right" })
+       .moveDown(1);
   
       // Tabla de detalles
       const tableTop = 250;

@@ -7,6 +7,13 @@ const Beneficiarios = {
     return result.rows;
   },
 
+  async obtenerBeneficiario(idbene) {
+    const query = "SELECT * FROM beneficiarios WHERE idbene = $1";
+    const value = [idbene]
+    const result = await pool.query(query, value);
+    return result.rows[0];
+  },
+
   async createBeneficiario(beneficiario) {
     const query =
       "INSERT INTO beneficiarios (nombre, apellido, cedula, email) VALUES ($1, $2, $3, $4) RETURNING *";
@@ -28,15 +35,15 @@ const Beneficiarios = {
       beneficiario.apellido,
       beneficiario.cedula,
       beneficiario.email,
-      beneficiario.id,
+      beneficiario.idbene,
     ];
     const result = await pool.query(query, values);
     return result.rows[0];
   },
 
-  async delete(id) {
+  async delete(idbene) {
     const query = "DELETE FROM beneficiarios WHERE idbene = $1";
-    const values = [id];
+    const values = [idbene];
     const result = await pool.query(query, values);
     return result.rowCount;
   },

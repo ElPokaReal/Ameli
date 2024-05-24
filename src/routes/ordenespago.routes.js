@@ -12,4 +12,6 @@ ordenes_pago.get('/ordenes_pago/:id', OrdenPagoController.obtenerOrdenPorId);
 
 ordenes_pago.get('/generar_orden/:id', OrdenPagoController.generarPDF);
 
+ordenes_pago.delete('/ordenes_pago/:id', OrdenPagoController.borrarOrden);
+
 module.exports=ordenes_pago;

@@ -9,6 +9,16 @@ exports.getBeneficiarios = async (req, res) => {
     }
 };
 
+exports.getBeneficiarioID = async (req, res) => {
+    const idbene = req.params.idbene;
+    try {
+        const beneficiarios = await Beneficiarios.obtenerBeneficiario(idbene);
+        res.status(200).json(beneficiarios);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener los datos del beneficiario' });
+    }
+};
+
 exports.createBeneficiario = async (req, res) => {
     try {
         const beneficiario = await Beneficiarios.createBeneficiario(req.body);
@@ -20,7 +30,7 @@ exports.createBeneficiario = async (req, res) => {
 
 exports.editBeneficiario = async (req, res) => {
     try {
-        req.body.id = req.params.id;
+        req.body.idbene = req.params.idbene;
         const beneficiario = await Beneficiarios.editBeneficiario(req.body);
         res.status(200).json(beneficiario);
     } catch (error) {
@@ -30,8 +40,8 @@ exports.editBeneficiario = async (req, res) => {
 
 exports.deleteBeneficiario = async (req, res) => {
     try {
-        const id = req.params.id;
-        const result = await Beneficiarios.delete(id);
+        const idbene = req.params.idbene;
+        const result = await Beneficiarios.delete(idbene);
         if (result > 0) {
             res.status(200).json({ message: 'Beneficiario eliminado con éxito' });
         } else {

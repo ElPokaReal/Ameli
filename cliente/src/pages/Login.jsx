@@ -24,7 +24,7 @@ function Login() {
        const data = await response.json();
        if (data.token) {
          login(data.token); // Utiliza la función login para actualizar el estado de autenticación
-         navigate('/administracion');
+         navigate('/');
        } else {
          alert("Error en el inicio de sesión");
        }
